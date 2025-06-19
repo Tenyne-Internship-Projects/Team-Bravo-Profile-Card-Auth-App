@@ -22,7 +22,7 @@ const Resetpswd = () => {
 
     try {
       
-      await axios.post(`${backendUrl}/api/auth/forgot-password`, { email });
+      await axios.post(`${backendUrl}/api/auth/reset-password`, { email });
 
       setState('sent');
       toast.success('Reset link sent! Check your email.');
@@ -108,5 +108,7 @@ const Resetpswd = () => {
     </div>
   );
 };
+
+
 
 export default Resetpswd;

@@ -8,7 +8,7 @@ import { FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
 const Loginform = () => {
   const { backendUrl, setIsLoggedIn, getUserData } = useContext(AppContext);
   const [state, setstate] = useState('sign in');
-  const [name, setName] = useState('');
+  // const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -17,10 +17,10 @@ const Loginform = () => {
   const togglePassword = () => setShowPassword((prev) => !prev);
 
   const validateForm = () => {
-    if (state === 'sign up' && name.trim().length < 2) {
-      toast.warning('Full name must be at least 2 characters');
-      return false;
-    }
+    // if (state === 'sign up' && name.trim().length < 2) {
+    //   toast.warning('Full name must be at least 2 characters');
+    //   return false;
+    // }
     if (!/\S+@\S+\.\S+/.test(email)) {
       toast.warning('Enter a valid email address');
       return false;
@@ -41,8 +41,8 @@ const Loginform = () => {
       axios.defaults.withCredentials = true;
 
       if (state === 'sign up') {
-        const { data } = await axios.post(`${backendUrl}/app/auth/register`, {
-          name,
+        const { data } = await axios.post(`${backendUrl}/api/auth/register`, {
+          
           email,
           password,
         });
@@ -56,7 +56,7 @@ const Loginform = () => {
           toast.error(data.message);
         }
       } else {
-        const { data } = await axios.post(`${backendUrl}/app/auth/login`, {
+        const { data } = await axios.post(`${backendUrl}/api/auth/login`, {
           email,
           password,
         });
@@ -87,7 +87,7 @@ const Loginform = () => {
         </p>
 
         <form onSubmit={onSubmithandler} className="w-full flex flex-col gap-4">
-          {state === 'sign up' && (
+          {/* {state === 'sign up' && (
             <div className="flex flex-col">
               <label className="mb-1 text-[#302B63] text-[17px] font-medium">Full Name</label>
               <input
@@ -99,7 +99,7 @@ const Loginform = () => {
                 required
               />
             </div>
-          )}
+          )} */}
 
           <div className="flex flex-col">
             <label className="mb-1 text-[#302B63] text-[17px] font-medium">Email</label>
@@ -148,12 +148,12 @@ const Loginform = () => {
           </button>
 
           {/* Google Auth UI */}
-          <div className="w-full text-center mt-3">
+          {/* <div className="w-full text-center mt-3">
             <div className="flex items-center justify-center gap-2 border border-[#302B63] py-2 rounded-md cursor-pointer hover:bg-[#302B63] hover:text-white transition-all">
               <FaGoogle />
               <span className="font-medium">Continue with Google</span>
             </div>
-          </div>
+          </div> */}
         </form>
 
         <p className="mt-4 text-sm">

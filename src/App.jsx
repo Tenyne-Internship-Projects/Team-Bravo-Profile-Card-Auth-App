@@ -7,6 +7,9 @@ import Resetpswd from './pages/Resetpswd';
 import Register from './pages/Register';
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import ConfirmReset from './pages/ConfirmReset';
+import Profilecard from './pages/Profilecard';
+import EditProfile from './pages/Editprofile';
 
 const App = () => {
   return (
@@ -19,6 +22,10 @@ const App = () => {
         <Route path='/email-verify' element={< Emailverify/>} />
         <Route path='/reset-password' element={< Resetpswd />} />
         <Route path='/register' element={< Register/>} />
+        <Route path='/confirm-reset' element={<ConfirmReset />} />
+        <Route path='/profile' element={<Profilecard />} />
+        <Route path='/edit-profile' element={<EditProfile />} />
+
         
       </Routes>
     </>

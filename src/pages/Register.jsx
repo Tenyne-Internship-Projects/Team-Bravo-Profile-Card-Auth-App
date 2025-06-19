@@ -44,7 +44,7 @@ const Register = () => {
       formData.append('state', state);
       formData.append('about', about);
 
-      await axios.post(`${backendUrl}/api/auth/complete-profile`, formData);
+      await axios.post(`${backendUrl}/api/auth/register`, formData);
 
       toast.success('Profile submitted successfully!');
       navigate('/');

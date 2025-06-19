@@ -6,20 +6,19 @@ import "react-toastify/dist/ReactToastify.css";
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
-  const backendUrl = import.meta.env.BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true); // ⏳ Loading state
+  const [loading, setLoading] = useState(true);
 
-  // Check if user is authenticated
   const getAuthState = async () => {
     try {
       axios.defaults.withCredentials = true;
       const { data } = await axios.get(`${backendUrl}/api/auth/is-auth`);
       if (data.success) {
         setIsLoggedIn(true);
-        await getUserData(); // await here ensures loading completes after userData
+        await getUserData();
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
@@ -28,7 +27,6 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
-  // Get logged-in user data
   const getUserData = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/api/user/data`);
@@ -42,9 +40,19 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
+  const logoutUser = async () => {
+    try {
+      await axios.get(`${backendUrl}/api/auth/logout`);
+      setIsLoggedIn(false);
+      setUserData(null);
+      toast.success("Logged out successfully");
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
+  };
+
   useEffect(() => {
     getAuthState();
-    
   }, []);
 
   const value = {
@@ -54,6 +62,7 @@ export const AppContextProvider = ({ children }) => {
     userData,
     setUserData,
     getUserData,
+    logoutUser,
     loading,
   };
 
