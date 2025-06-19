@@ -5,10 +5,13 @@ import Signin from './pages/Signin';
 import Emailverify from './pages/Emailverify';
 import Resetpswd from './pages/Resetpswd';
 import Register from './pages/Register';
-
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 const App = () => {
   return (
+
     <>
+    <ToastContainer/>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Signin />} />

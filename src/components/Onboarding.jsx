@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 const Onboarding = () => {
-    const onboard = useNavigate()
+    const navigate = useNavigate()
   return (
     <div className='flex flex-col items-center mt-2  h-[53vh] w-[40%] bg-white  shadow-[0_0_12px_rgba(0,0,0,0.1)] '>
         
@@ -15,7 +15,7 @@ const Onboarding = () => {
           Let's help you get started with the perfect solution.
         </p>
 
-        <button onClick={()=>onboard('/register')} className="w-[80%] mx-auto block h-[2.8em] transition-all ease-out duration-300 hover:scale-105 bg-[#4A008F] rounded-[2px] text-white font-bold font-inter mt-[1.5em]" >
+        <button onClick={() => navigate('/login')} className="w-[80%] mx-auto block h-[2.8em] transition-all ease-out duration-300 hover:scale-105 bg-[#4A008F] rounded-[2px] text-white font-bold font-inter mt-[1.5em]" >
           Get Started
         </button>
       
