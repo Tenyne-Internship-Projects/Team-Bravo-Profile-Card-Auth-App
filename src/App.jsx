@@ -7,6 +7,7 @@ import Resetpswd from './pages/Resetpswd';
 import Register from './pages/Register';
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+
 const App = () => {
   return (
 
@@ -18,6 +19,7 @@ const App = () => {
         <Route path='/email-verify' element={< Emailverify/>} />
         <Route path='/reset-password' element={< Resetpswd />} />
         <Route path='/register' element={< Register/>} />
+        
       </Routes>
     </>
   )
