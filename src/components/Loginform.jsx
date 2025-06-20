@@ -25,8 +25,8 @@ const Loginform = () => {
       toast.warning('Enter a valid email address');
       return false;
     }
-    if (password.length < 6) {
-      toast.warning('Password must be at least 6 characters');
+    if (password.length < 8) {
+      toast.warning('Password must be at least 8 characters');
       return false;
     }
     return true;
