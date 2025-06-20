@@ -3,24 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Loginform = () => {
   const { backendUrl, setIsLoggedIn, getUserData } = useContext(AppContext);
   const [state, setstate] = useState('sign in');
-  // const [name, setName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState('');
   const navigate = useNavigate();
 
   const togglePassword = () => setShowPassword((prev) => !prev);
 
   const validateForm = () => {
-    // if (state === 'sign up' && name.trim().length < 2) {
-    //   toast.warning('Full name must be at least 2 characters');
-    //   return false;
-    // }
+    if (state === 'sign up' && name.trim().length < 2) {
+      toast.warning('Full name must be at least 2 characters');
+      return false;
+    }
     if (!/\S+@\S+\.\S+/.test(email)) {
       toast.warning('Enter a valid email address');
       return false;
@@ -29,12 +31,15 @@ const Loginform = () => {
       toast.warning('Password must be at least 8 characters');
       return false;
     }
+    if (state === 'sign up' && password !== confirmPassword) {
+      toast.warning('Passwords do not match');
+      return false;
+    }
     return true;
   };
 
   const onSubmithandler = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     try {
@@ -42,16 +47,17 @@ const Loginform = () => {
 
       if (state === 'sign up') {
         const { data } = await axios.post(`${backendUrl}/api/auth/register`, {
-          
+          name,
           email,
           password,
+          confirmPassword,
         });
 
         if (data.success) {
           toast.success(data.message || 'Registration successful. Please check your email to verify your account.');
           setIsLoggedIn(true);
           await getUserData();
-          navigate('/verify-email'); // optional route for email verification page
+          navigate('/verify-email');
         } else {
           toast.error(data.message);
         }
@@ -76,7 +82,7 @@ const Loginform = () => {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center  py-10">
+    <main className="min-h-screen flex items-center justify-center py-10">
       <div className="flex flex-col items-center w-full sm:w-[80%] md:w-[60%] lg:w-[100%] bg-white rounded-lg shadow-md p-6">
         <h1 className="font-bold text-[#302B63] text-2xl sm:text-3xl text-center mb-2">
           {state === 'sign in' ? 'Welcome Back to KConnect' : 'Get Started with KConnect'}
@@ -87,7 +93,7 @@ const Loginform = () => {
         </p>
 
         <form onSubmit={onSubmithandler} className="w-full flex flex-col gap-4">
-          {/* {state === 'sign up' && (
+          {state === 'sign up' && (
             <div className="flex flex-col">
               <label className="mb-1 text-[#302B63] text-[17px] font-medium">Full Name</label>
               <input
@@ -99,7 +105,7 @@ const Loginform = () => {
                 required
               />
             </div>
-          )} */}
+          )}
 
           <div className="flex flex-col">
             <label className="mb-1 text-[#302B63] text-[17px] font-medium">Email</label>
@@ -116,7 +122,17 @@ const Loginform = () => {
           <div className="flex flex-col relative">
             <label className="mb-1 text-[#302B63] text-[17px] font-medium">Password</label>
             <input
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                const val = e.target.value;
+                setPassword(val);
+                if (val.length < 8) {
+                  setPasswordStrength('weak');
+                } else if (/[A-Z]/.test(val) && /\d/.test(val) && /[^A-Za-z0-9]/.test(val)) {
+                  setPasswordStrength('strong');
+                } else {
+                  setPasswordStrength('medium');
+                }
+              }}
               value={password}
               type={showPassword ? 'text' : 'password'}
               placeholder="***********"
@@ -129,7 +145,38 @@ const Loginform = () => {
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
+            {password && (
+              <small
+                className={`text-sm mt-1 ${
+                  passwordStrength === 'weak'
+                    ? 'text-red-500'
+                    : passwordStrength === 'medium'
+                    ? 'text-yellow-600'
+                    : 'text-green-600'
+                }`}
+              >
+                {passwordStrength === 'weak'
+                  ? 'Weak password'
+                  : passwordStrength === 'medium'
+                  ? 'Medium strength'
+                  : 'Strong password'}
+              </small>
+            )}
           </div>
+
+          {state === 'sign up' && (
+            <div className="flex flex-col relative">
+              <label className="mb-1 text-[#302B63] text-[17px] font-medium">Confirm Password</label>
+              <input
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={confirmPassword}
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Re-enter password"
+                className="border-2 border-[#302B63] rounded-md px-3 py-2 placeholder:text-[#616161] placeholder:font-medium outline-none"
+                required
+              />
+            </div>
+          )}
 
           {state === 'sign in' && (
             <p
@@ -146,14 +193,6 @@ const Loginform = () => {
           >
             {state === 'sign in' ? 'Sign In' : 'Sign Up'}
           </button>
-
-          {/* Google Auth UI */}
-          {/* <div className="w-full text-center mt-3">
-            <div className="flex items-center justify-center gap-2 border border-[#302B63] py-2 rounded-md cursor-pointer hover:bg-[#302B63] hover:text-white transition-all">
-              <FaGoogle />
-              <span className="font-medium">Continue with Google</span>
-            </div>
-          </div> */}
         </form>
 
         <p className="mt-4 text-sm">
