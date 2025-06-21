@@ -44,7 +44,19 @@ This is the **frontend** portion of the KConnect Profile Card web app built with
 
 | Register Page | Profile View | Edit Profile |
 |---------------|--------------|--------------|
-| ![Register](./screenshots/register.png) | ![Profile](./screenshots/profile.png) | ![Edit](./screenshots/edit.png) |
+| ![Onboarding](./screenshots/screen1.png) |
+| ![signin](./screenshots/screen2.png) |
+| ![Signup](./screenshots/screen3.png) |
+| ![ResetPassword](./screenshots/screen4.png) |
+| ![VerifyEmail](./screenshots/screen5.png) |
+| ![Register](./screenshots/screen6a.png) |
+| ![Register](./screenshots/screen6b.png) |
+| ![Profile](./screenshots/screen7a.png) |
+| ![Profile](./screenshots/screen7b.png) |
+| ![Edit](./screenshots/screen8a.png) |
+| ![Edit](./screenshots/screen8b.png) |
+
+ 
 
 ---
 
@@ -71,15 +83,15 @@ client/
 
 ### 1. Navigate to the client folder
 ```bash
-cd client
+cd kconnect
 ```
 
 ### 2. Setup environment variables
 Create a `.env` file in the `client/` directory:
 
 ```
-REACT_APP_BACKEND_URL=http://localhost:5000
-```
+
+
 
 ### 3. Install dependencies
 ```bash
@@ -88,7 +100,7 @@ npm install
 
 ### 4. Run the frontend app
 ```bash
-npm start
+npm run dev
 ```
 
 App will be available at: `http://localhost:3000`
@@ -103,6 +115,11 @@ You can also checck: `https://team-bravo-profile-card-auth-app.vercel.app/`
 | `/register` | Register.jsx | Create a new profile |
 | `/profile` | ProfileCard.jsx | View user profile |
 | `/edit-profile` | EditProfile.jsx | Edit profile information |
+| `/login` | Signin.jsx | Login |
+| `/verify-email` | Emailverify.jsx | To verify new user |
+| `/edit-profile` | EditProfile.jsx | Edit profile information |
+| `/reset-password` | Resetpswd.jsx | To reset password |
+
 
 ---
 
