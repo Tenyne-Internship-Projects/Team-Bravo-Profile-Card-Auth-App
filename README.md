@@ -42,7 +42,7 @@ This is the **frontend** portion of the KConnect Profile Card web app built with
 
 ## 📸 Screenshots
 
-| Register Page | Profile View | Edit Profile |
+
 |---------------|--------------|--------------|
 | ![Onboarding](./screenshots/screen1.png) |
 | ![signin](./screenshots/screen2.png) |
