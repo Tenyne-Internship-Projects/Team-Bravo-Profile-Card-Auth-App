@@ -78,7 +78,7 @@ const Emailverify = () => {
         toast.success(data.message);
         clearInputs();
         await getUserData();
-        navigate('/');
+        navigate('/register');
       } else {
         toast.error(data.message);
       }

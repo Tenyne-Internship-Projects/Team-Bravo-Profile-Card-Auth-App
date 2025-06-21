@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import ConfirmReset from './pages/ConfirmReset';
 import Profilecard from './pages/Profilecard';
 import EditProfile from './pages/EditProfile';
+import ErrorPage from './pages/ErrorPage';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         <Route path='/confirm-reset' element={<ConfirmReset />} />
         <Route path='/profile' element={<Profilecard />} />
         <Route path='/edit-profile' element={<EditProfile />} />
+        <Route path="*" element={<ErrorPage />} />
 
         
       </Routes>

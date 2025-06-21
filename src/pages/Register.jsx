@@ -8,18 +8,31 @@ import { AppContext } from '../context/AppContext';
 
 const Register = () => {
   const { backendUrl } = useContext(AppContext);
-  const [preview, setPreview] = useState(thumbnail);
-  const [image, setImage] = useState(null);
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [contact, setContact] = useState('');
-  const [country, setCountry] = useState('');
-  const [state, setState] = useState('');
-  const [about, setAbout] = useState('');
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const onImageChange = (e) => {
+  const [preview, setPreview] = useState(thumbnail);
+  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const [form, setForm] = useState({
+    fullname: '',
+    email: '',
+    contact: '',
+    country: '',
+    state: '',
+    about: '',
+    skills: '',
+    tools: '',
+    github: '',
+    portfolio: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith('image/')) {
       setImage(file);
@@ -32,28 +45,32 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!image || !username || !email || !contact || !country || !state || !about) {
-      toast.error('Please fill all fields and upload an image');
-      return;
+    const requiredFields = ['fullname', 'email', 'contact', 'country', 'state', 'about'];
+    for (const field of requiredFields) {
+      if (!form[field]) {
+        toast.error(`Please fill in the ${field} field`);
+        return;
+      }
     }
 
     try {
       setLoading(true);
       const formData = new FormData();
-      formData.append('image', image);
-      formData.append('username', username);
-      formData.append('email', email);
-      formData.append('contact', contact);
-      formData.append('country', country);
-      formData.append('state', state);
-      formData.append('about', about);
+      for (const key in form) {
+        formData.append(key, form[key]);
+      }
+      if (image) formData.append('image', image);
 
-      await axios.post(`${backendUrl}/api/auth/register`, formData);
+      const { data } = await axios.post(`${backendUrl}/api/auth/register`, formData);
 
-      toast.success('Profile submitted successfully!');
-      navigate('/');
-    } catch (error) {
-      toast.error(error?.response?.data?.message || error.message);
+      if (data.success) {
+        toast.success('Profile registered successfully!');
+        navigate('/profile');
+      } else {
+        toast.error(data.message || 'Registration failed');
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || 'Server error');
     } finally {
       setLoading(false);
     }
@@ -61,13 +78,15 @@ const Register = () => {
 
   return (
     <div className="flex flex-col items-center justify-center bg-blue-200 min-h-screen px-4 py-8">
+      {/* Logo */}
       <div className="w-full p-2 sm:p-6 sm:px-24 absolute top-0">
         <img src={logo} alt="KConnect Logo" className="w-1/5 sm:w-1/6 cursor-pointer" />
       </div>
 
+      {/* Card */}
       <div className="w-full max-w-xl bg-white rounded-md shadow-md p-6 mt-24">
         <h1 className="text-[#4A008F] text-2xl sm:text-3xl font-semibold text-center mb-4">
-          Complete Profile
+          Create Your Profile
         </h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -85,32 +104,34 @@ const Register = () => {
               type="file"
               accept="image/*"
               className="hidden"
-              onChange={onImageChange}
+              onChange={handleImageChange}
             />
             <p className="text-sm text-[#302B63] mt-1">Click image to upload</p>
           </div>
 
           {/* Username */}
           <div>
-            <label className="text-[#302B63] font-medium">Username</label>
+            <label className="text-[#302B63] font-medium">Full name</label>
             <input
               type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter your username"
+              name="fullname"
+              value={form.fullname}
+              onChange={handleChange}
+              placeholder="Fullname"
               className="border-2 border-[#302B63] rounded-md px-3 py-2 w-full outline-none"
               required
             />
           </div>
 
-          {/* Email & Contact */}
+          {/* Email and Contact */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-[#302B63] font-medium">Email</label>
               <input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={form.email}
+                onChange={handleChange}
                 placeholder="you@example.com"
                 className="border-2 border-[#302B63] rounded-md px-3 py-2 w-full outline-none"
                 required
@@ -119,9 +140,10 @@ const Register = () => {
             <div>
               <label className="text-[#302B63] font-medium">Contact</label>
               <input
-                type="tel"
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}
+                type="text"
+                name="contact"
+                value={form.contact}
+                onChange={handleChange}
                 placeholder="+234 810 000 0000"
                 className="border-2 border-[#302B63] rounded-md px-3 py-2 w-full outline-none"
                 required
@@ -129,14 +151,15 @@ const Register = () => {
             </div>
           </div>
 
-          {/* Country & State */}
+          {/* Country and State */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="text-[#302B63] font-medium">Country</label>
               <input
                 type="text"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
+                name="country"
+                value={form.country}
+                onChange={handleChange}
                 placeholder="e.g. Nigeria"
                 className="border-2 border-[#302B63] rounded-md px-3 py-2 w-full outline-none"
                 required
@@ -146,8 +169,9 @@ const Register = () => {
               <label className="text-[#302B63] font-medium">State</label>
               <input
                 type="text"
-                value={state}
-                onChange={(e) => setState(e.target.value)}
+                name="state"
+                value={form.state}
+                onChange={handleChange}
                 placeholder="e.g. Lagos"
                 className="border-2 border-[#302B63] rounded-md px-3 py-2 w-full outline-none"
                 required
@@ -159,13 +183,48 @@ const Register = () => {
           <div>
             <label className="text-[#302B63] font-medium">About Me</label>
             <textarea
-              value={about}
-              onChange={(e) => setAbout(e.target.value)}
+              name="about"
+              value={form.about}
+              onChange={handleChange}
               placeholder="Tell us about yourself..."
               className="border-2 border-[#302B63] rounded-md px-3 py-2 w-full outline-none h-24"
               required
             />
           </div>
+
+          {/* Skills, Tools, GitHub, Portfolio */}
+          <input
+            type="text"
+            name="skills"
+            value={form.skills}
+            onChange={handleChange}
+            placeholder="Skills (comma-separated)"
+            className="border-2 border-[#302B63] rounded-md px-3 py-2 w-full outline-none"
+          />
+          <input
+            type="text"
+            name="tools"
+            value={form.tools}
+            onChange={handleChange}
+            placeholder="Tools (comma-separated)"
+            className="border-2 border-[#302B63] rounded-md px-3 py-2 w-full outline-none"
+          />
+          <input
+            type="text"
+            name="github"
+            value={form.github}
+            onChange={handleChange}
+            placeholder="GitHub URL"
+            className="border-2 border-[#302B63] rounded-md px-3 py-2 w-full outline-none"
+          />
+          <input
+            type="text"
+            name="portfolio"
+            value={form.portfolio}
+            onChange={handleChange}
+            placeholder="Portfolio URL"
+            className="border-2 border-[#302B63] rounded-md px-3 py-2 w-full outline-none"
+          />
 
           {/* Submit */}
           <button
@@ -175,7 +234,7 @@ const Register = () => {
               loading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
             }`}
           >
-            {loading ? 'Submitting...' : 'Submit'}
+            {loading ? 'Registering...' : 'Register'}
           </button>
         </form>
       </div>
