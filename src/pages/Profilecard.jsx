@@ -123,15 +123,15 @@ const ProfileCard = () => {
           <motion.div className="flex justify-end gap-3 pt-4" variants={itemVariants}>
             <button
               onClick={handleEdit}
-              className="text-white bg-yellow-400 px-4 py-1 rounded hover:bg-yellow-500 text-sm"
+              className="text-[#302B63] bg-white px-4 py-1 cursor-pointer text-sm"
             >
-              Edit
+              Edit Profile
             </button>
             <button
               onClick={handleLogout}
-              className="text-white bg-red-500 px-4 py-1 rounded hover:bg-red-600 text-sm"
+              className="text-[#302B63] bg-white px-4 py-1  cursor-pointer text-sm"
             >
-              Logout
+              Sign Out
             </button>
           </motion.div>
         </div>
@@ -162,9 +162,10 @@ const ProfileCard = () => {
             <p className="text-gray-600 text-[14px] mt-1">📍 {profile.state}, {profile.country}</p>
           </motion.div>
 
+          
           {/* Contact Info */}
           <motion.div variants={itemVariants}>
-            <h3 className="text-lg font-semibold text-[#302B63] mt-4 mb-2">Contact Information</h3>
+            <h3 className="text-lg font-bold text-[#302B63] mt-4 mb-2">Contact Information</h3>
             <div className="flex flex-col gap-3">
               <p className="bg-[#302B63]/10 text-[#302B63] px-4 py-2 rounded-md text-sm">
                 📧 <a href={`mailto:${profile.email}`}>{profile.email}</a>

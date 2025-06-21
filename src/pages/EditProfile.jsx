@@ -93,7 +93,7 @@ const EditProfile = () => {
 
       if (data.success) {
         toast.success('Profile updated successfully');
-        await getUserData(); // refresh user data in context
+        await getUserData(); 
         navigate('/profile');
       } else {
         toast.error(data.message);

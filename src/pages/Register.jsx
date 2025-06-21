@@ -14,18 +14,20 @@ const Register = () => {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const [form, setForm] = useState({
-    fullname: '',
-    email: '',
-    contact: '',
-    country: '',
-    state: '',
-    about: '',
-    skills: '',
-    tools: '',
-    github: '',
-    portfolio: '',
-  });
+ const [form, setForm] = useState({
+  fullname: '', 
+  username: '',
+  email: '',
+  contact: '',
+  country: '',
+  state: '',
+  about: '',
+  skills: '',
+  tools: '',
+  github: '',
+  portfolio: '',
+});
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -109,7 +111,7 @@ const Register = () => {
             <p className="text-sm text-[#302B63] mt-1">Click image to upload</p>
           </div>
 
-          {/* Username */}
+          {/* Fullname */}
           <div>
             <label className="text-[#302B63] font-medium">Full name</label>
             <input
@@ -122,6 +124,21 @@ const Register = () => {
               required
             />
           </div>
+
+          {/* Username */}
+<div>
+  <label className="text-[#302B63] font-medium">Username</label>
+  <input
+    type="text"
+    name="username"
+    value={form.username}
+    onChange={handleChange}
+    placeholder="Unique username"
+    className="border-2 border-[#302B63] rounded-md px-3 py-2 w-full outline-none"
+    required
+  />
+</div>
+
 
           {/* Email and Contact */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
