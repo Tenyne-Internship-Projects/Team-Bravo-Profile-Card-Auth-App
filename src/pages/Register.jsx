@@ -63,7 +63,7 @@ const Register = () => {
       }
       if (image) formData.append('image', image);
 
-      const { data } = await axios.post(`${backendUrl}/api/auth/register`, formData);
+      const { data } = await axios.post(`${backendUrl}/api/profile/create`, formData);
 
       if (data.success) {
         toast.success('Profile registered successfully!');
